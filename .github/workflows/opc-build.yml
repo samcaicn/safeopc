@@ -88,11 +88,10 @@ jobs:
             --title "SafeOPC Windows build" \
             --notes "SafeOPC Windows 安装包（未签名）。exe 已同步留存于 workflow artifact：safeopc-windows-setup。"
 
-      - name: Cleanup - delete release and opc branch
+      - name: Cleanup - delete opc branch (release retained for SignPath signing)
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          gh release delete "${{ steps.release.outputs.tag }}" --yes --cleanup-tag || true
           gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/opc" || true
